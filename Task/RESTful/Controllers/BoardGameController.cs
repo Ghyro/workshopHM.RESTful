@@ -10,7 +10,7 @@ using RESTful.Models;
 namespace RESTful.Controllers
 {
     [Produces("application/json")]
-     [Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class BoardGameController : ControllerBase
     {
@@ -27,7 +27,7 @@ namespace RESTful.Controllers
         /// <remarks>
         /// Sample response:
         ///
-        ///     GET
+        ///     GET/BoardGame
         ///     {
         ///        "id": 1,
         ///        "title": "BoardGame1",
@@ -57,7 +57,7 @@ namespace RESTful.Controllers
         /// <remarks>
         /// Sample response:
         ///
-        ///     GET
+        ///     GET/BoardGames
         ///     {
         ///        "id": 1,
         ///        "title": "BoardGame1",
@@ -88,12 +88,11 @@ namespace RESTful.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST
+        ///     POST/BoardGame
         ///     {
-        ///        "id": 1,
-        ///        "title": "Item1",
-        ///        "description": "Article1",
-        ///        "price": 20
+        ///        "title": "BoardGame1",
+        ///        "description": "DescriptionForBoardGame1",
+        ///        "Price": 20
         ///     }
         ///
         /// </remarks>
@@ -110,30 +109,20 @@ namespace RESTful.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> AddBoardGame([FromBody] BoardGame game)
         {
-            if (ModelState.IsValid)
+            if (game == null)
             {
-                try
-                {
-                    var boardGame = await _service.CreateBoardGameAsync(game);
-
-                    if (boardGame != null)
-                    {
-                        return Ok(boardGame);
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
-                }
-                catch (Exception)
-                {
-                    return BadRequest();
-                }                
+                return BadRequest();
             }
 
-            return BadRequest();
+            var boardGame = game;
+
+            await _service.CreateBoardGameAsync(boardGame);
+
+            var outputGame = boardGame;
+
+            return CreatedAtAction(nameof(GetBoardGameById), new { id = outputGame.Id }, outputGame);
         }
 
-        /* https://localhost:44319/swagger/v1/swagger.json */
+        /* https://localhost:44319/swagger/v1/swagger.json  the link access to localhost Swagger (https)*/
     }
 }

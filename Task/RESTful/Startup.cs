@@ -44,14 +44,12 @@ namespace RESTful
             {
                 c.SwaggerDoc("v1", new Info
                 {
-                    Version = "v1",
-                    Title = "My API",
-                    Description = "ASP.NET Core Web API",
-                    TermsOfService = "None",
+                    Title = "WorkshopHM",
+                    Description = "Create RESTful service using .NET Core Web API and add Swagger via Swashbuckle.",
                     Contact = new Contact
                     {
                         Name = "Kirill Korzun",
-                        Email = "kiryl_korzun@epam.com"
+                        Email = "kiryl_korzun@epam.com",
                     }
                 });
             });

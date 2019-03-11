@@ -25,7 +25,7 @@ namespace RESTful.Interfaces
         /// Creates a new board game asynchronously.
         /// </summary>
         /// <param name="boardGame">A <see cref="BoardGame"/></param>
-        /// <returns>A <see cref="Task{BoardGame}"/></returns>
-        Task<BoardGame> CreateBoardGameAsync(BoardGame boardGame);
+        /// <returns>A <see cref="Task"/></returns>
+        Task CreateBoardGameAsync(BoardGame boardGame);
     }
 }

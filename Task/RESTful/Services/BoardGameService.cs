@@ -45,26 +45,19 @@ namespace RESTful.Services
         }
 
         /// <inheritdoc/>
-        public async Task<BoardGame> CreateBoardGameAsync(BoardGame boardGame)
+        public async Task CreateBoardGameAsync(BoardGame boardGame)
         {
-            if (_context != null)
+            _context.BoardGames.Add(boardGame);
+
+            var n = await _context.SaveChangesAsync();
+
+            if (n > 0)
             {
-                await _context.BoardGames.AddAsync(boardGame);
-
-                int n = await _context.SaveChangesAsync();
-
-                if (n > 0)
+                _cache.Set(boardGame.Id, boardGame, new MemoryCacheEntryOptions
                 {
-                    _cache.Set(boardGame.Id, boardGame, new MemoryCacheEntryOptions
-                    {
-                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
-                    });
-                }
-
-                return boardGame;
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+                });
             }
-
-            return null;            
         }
     }
 }
