@@ -15,3 +15,31 @@
 6. Add caching mechanism through Middleware - you can use "from box" .NET Core response cache.
 
 7. Add Swagger definition via Swashbuckle.
+
+## Short description
+
+1. The project uses HTTPS-protocol, IMemoryCache (middleware), SwaggerUI via Swashbuckle.
+    
+2. IMPORTANT!!! If you would like to add a new item through POST-request make sure you do not use ID-field. For example:
+   
+##### <p style='color:red'>WRONG OPTION</p>
+
+```json
+{
+  "id": 0,
+  "title": "string",
+  "description": "string",
+  "price": 0
+}
+```
+
+##### <p style='color:green'>CORRECT OPTION</p>
+
+```json
+{
+  "title": "string",
+  "description": "string",
+  "price": 0
+}
+```
+
