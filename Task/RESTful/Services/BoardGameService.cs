@@ -74,9 +74,11 @@ namespace RESTful.Services
 
             if (boardGame != null)
             {
+                _cache.Remove(boardGame.Id);
+
                 _context.BoardGames.Remove(boardGame);
 
-                result = await _context.SaveChangesAsync();
+                result = await _context.SaveChangesAsync();                
             }
 
             return result;
