@@ -20,7 +20,7 @@
 
 1. The project uses HTTPS-protocol, IMemoryCache (middleware), SwaggerUI via Swashbuckle.
     
-2. IMPORTANT!!! If you would like to add a new item through POST-request make sure you do not use ID-field. For example:
+2. ##### IMPORTANT!!! If you would like to add a new item through POST-request make sure you do not use ID-field. Sample (options):
    
 ##### ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) WRONG OPTION
 
@@ -43,3 +43,6 @@
 }
 ```
 
+## Swagger UI
+
+![Screenshot](screenshot.png)
