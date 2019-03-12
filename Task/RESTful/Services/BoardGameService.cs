@@ -23,7 +23,12 @@ namespace RESTful.Services
         /// <inheritdoc/>
         public async Task<List<BoardGame>> GetAllBoardGamesAsync()
         {
-            return await _context.BoardGames.ToListAsync();
+            if (_context != null)
+            {
+                return await _context.BoardGames.ToListAsync();
+            }
+
+            return null;
         }
 
         /// <inheritdoc/>
@@ -35,7 +40,7 @@ namespace RESTful.Services
             {
                 boardGame = await _context.BoardGames.FirstOrDefaultAsync(x => x.Id == id);
 
-                if (boardGame is null)
+                if (boardGame != null)
                 {
                     _cache.Set(boardGame.Id, boardGame, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
                 }
@@ -58,6 +63,23 @@ namespace RESTful.Services
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                 });
             }
+        }
+
+        /// <inheritdoc/>
+        public async Task<int> DeleteBoardGameAsync(int id)
+        {
+            var result = 0;
+
+            var boardGame = await _context.BoardGames.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (boardGame != null)
+            {
+                _context.BoardGames.Remove(boardGame);
+
+                result = await _context.SaveChangesAsync();
+            }
+
+            return result;
         }
     }
 }

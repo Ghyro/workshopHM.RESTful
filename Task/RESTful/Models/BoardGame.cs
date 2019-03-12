@@ -8,7 +8,6 @@ namespace RESTful.Models
 {
     public class BoardGame
     {
-        [Key]
         [ScaffoldColumn(false)]
         public int Id { get; set; }
 

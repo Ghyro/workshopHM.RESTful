@@ -27,5 +27,12 @@ namespace RESTful.Interfaces
         /// <param name="boardGame">A <see cref="BoardGame"/></param>
         /// <returns>A <see cref="Task"/></returns>
         Task CreateBoardGameAsync(BoardGame boardGame);
+
+        /// <summary>
+        /// Removes board game by id asynchronously.
+        /// </summary>
+        /// <param name="id">A board game identifier/></param>
+        /// <returns>A <see cref="Task{Int32}"/></returns>
+        Task<int> DeleteBoardGameAsync(int id);
     }
 }

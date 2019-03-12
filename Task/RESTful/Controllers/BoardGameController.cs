@@ -36,7 +36,7 @@ namespace RESTful.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <returns>A new board game</returns>
+        /// <returns>A board game</returns>
         /// <response code="200">Ok</response>
         /// <response code="400">If the item is null</response>
         /// <response code="500">Internal Server Error</response>
@@ -47,6 +47,11 @@ namespace RESTful.Controllers
         public async Task<IActionResult> GetBoardGameById(int id)
         {
             var boardGames = await _service.GetBoardGameAsync(id);
+
+            if (boardGames == null)
+            {
+                return NotFound();
+            }
 
             return Ok(boardGames);
         }
@@ -66,18 +71,27 @@ namespace RESTful.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <returns>A new board game</returns>
+        /// <returns>The list of board games</returns>
         /// <response code="200">Ok</response>
-        /// <response code="400">If the list is null</response>
+        /// <response code="201">Created</response>
+        /// <response code="400">If the item is null</response>   
+        /// <response code="409">Conflict</response>
         /// <response code="500">Internal Server Error</response>
         [HttpGet]
         [Route("")]
         [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
         [ProducesResponseType(400)]
+        [ProducesResponseType(409)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetAllBoardGames()
         {
             var boardGames = await _service.GetAllBoardGamesAsync();
+
+            if (boardGames == null)
+            {
+                return NotFound();
+            }
 
             return Ok(boardGames);
         }
@@ -96,14 +110,16 @@ namespace RESTful.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <param name="game">Input item</param>
+        /// <param name="game">A <see cref="BoardGame"/></param>
         /// <returns>A new board game</returns>
         /// <response code="200">Ok</response>
+        /// <response code="201">Created</response>
         /// <response code="400">If the item is null</response>   
         /// <response code="409">Conflict</response>
         /// <response code="500">Internal Server Error</response>
         [HttpPost]
         [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(409)]
         [ProducesResponseType(500)]
@@ -118,9 +134,51 @@ namespace RESTful.Controllers
 
             await _service.CreateBoardGameAsync(boardGame);
 
+            if (boardGame == null)
+            {
+                return NotFound();
+            }
+
             var outputGame = boardGame;
 
-            return CreatedAtAction(nameof(GetBoardGameById), new { id = outputGame.Id }, outputGame);
+            return Ok(outputGame);
+        }
+
+        /// <summary>
+        /// Removes a board game.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE/BoardGame
+        ///     {
+        ///        "id": 1
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id">A board game identifier</param>
+        /// <returns>Removed board game</returns>
+        /// <response code="200">Ok</response>
+        /// <response code="201">Success</response>
+        /// <response code="400">If the item is null</response>   
+        /// <response code="409">Conflict</response>
+        /// <response code="500">Internal Server Error</response>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(500)]        
+        public async Task<IActionResult> DeleteBoardGame(int id)
+        {
+            var boardGame = await _service.DeleteBoardGameAsync(id);
+
+            if (boardGame == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok();
         }
 
         /* https://localhost:44319/swagger/v1/swagger.json  the link access to localhost Swagger (https)*/
