@@ -38,11 +38,11 @@ namespace RESTful.Controllers
         /// </remarks>
         /// <returns>A board game</returns>
         /// <response code="200">Ok</response>
-        /// <response code="400">If the item is null</response>
+        /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetBoardGameById(int id)
         {
@@ -73,16 +73,10 @@ namespace RESTful.Controllers
         /// </remarks>
         /// <returns>The list of board games</returns>
         /// <response code="200">Ok</response>
-        /// <response code="201">Created</response>
-        /// <response code="400">If the item is null</response>   
-        /// <response code="409">Conflict</response>
         /// <response code="500">Internal Server Error</response>
         [HttpGet]
         [Route("")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(201)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(409)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetAllBoardGames()
         {
@@ -112,22 +106,25 @@ namespace RESTful.Controllers
         /// </remarks>
         /// <param name="game">A <see cref="BoardGame"/></param>
         /// <returns>A new board game</returns>
-        /// <response code="200">Ok</response>
         /// <response code="201">Created</response>
-        /// <response code="400">If the item is null</response>   
+        /// <response code="400">Bad Request</response>   
         /// <response code="409">Conflict</response>
         /// <response code="500">Internal Server Error</response>
         [HttpPost]
-        [ProducesResponseType(200)]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(409)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> AddBoardGame([FromBody] BoardGame game)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (game == null)
             {
-                return BadRequest();
+                NotFound();
             }
 
             var boardGame = game;
@@ -159,13 +156,13 @@ namespace RESTful.Controllers
         /// <param name="id">A board game identifier</param>
         /// <returns>Removed board game</returns>
         /// <response code="200">Ok</response>
-        /// <response code="201">Success</response>
-        /// <response code="400">If the item is null</response>   
+        /// <response code="204">No Content</response>
+        /// <response code="400">Bad Request</response>   
         /// <response code="409">Conflict</response>
         /// <response code="500">Internal Server Error</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(201)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(409)]
         [ProducesResponseType(500)]        
