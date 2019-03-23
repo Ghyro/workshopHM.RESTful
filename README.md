@@ -1,4 +1,4 @@
-# workshopHM.RESTful
+# workshopHW.RESTful
 
 ## Task
 
